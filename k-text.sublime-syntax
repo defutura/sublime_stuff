@@ -1,0 +1,125 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/3/syntax.html
+
+name: K-Text
+file_extensions:
+  - ktx
+scope: source.example-c
+
+contexts:
+  # The prototype context is prepended to all contexts but those setting
+  # meta_include_prototype: false.
+  prototype:
+    - include: comments
+
+  main:
+    # The main context is the initial starting point of our syntax.
+    # Include other contexts from here (or specify them directly).
+    - include: keywords
+    - include: numbers
+    - include: strings
+
+  keywords:
+    # Keywords are if, else for and while.
+    # Note that blackslashes don't need to be escaped within single quoted
+    # strings in YAML. When using single quoted strings, only single quotes
+    # need to be escaped: this is done by using two single quotes next to each
+    # other.
+    - match: '\b(if|else|for|while)\b' #
+      scope: keyword.control.example-c
+
+  numbers:
+    - match: '\b(-)?[0-9.]+\b'
+      scope: constant.numeric.example-c
+
+  strings:
+    # Strings begin and end with quotes, and use backslashes as an escape
+    # character.
+    - match: '"'
+      scope: punctuation.definition.string.begin.example-c
+      push: inside_string
+
+  inside_string:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.double.example-c
+    - match: '\.'
+      scope: constant.character.escape.example-c
+    - match: '"'
+      scope: punctuation.definition.string.end.example-c
+      pop: true
+
+  comments:
+    # Comments
+    - match: '(?<!\:)(\/\/.*)'
+      scope: comment.notes
+
+    # Line breaks
+    - match: '^(\-[\-\=]{2}.*)'
+      scope: support.function.notes
+
+    # Ordered bullets
+    - match: '^([ \t]*[0-9a-z]+[\:\.\)]\)?\s(\w+\:)?)'
+      scope: keyword.operator.notes
+      captures:
+      '2': {name: keyword.other.notes}
+
+    # Unordered bullets
+    - match: '^(\t*[\-\=\.]+\s(\w+\:)?)'
+      scope: variable.language.notes
+      captures:
+      '2': {name: keyword.other.notes}
+
+    # Emphasis
+    - match: '(\*+[a-zA-Z \t]+\*+)'
+      scope: keyword.other.notes
+
+    # Arrows
+    - match: '(-+>||=+>||<=+||<-+)'
+      scope: variable.language.notes
+
+    # Important, surrounded by <...>
+    - match: '(\<[^\>]*\>)'
+      scope: constant.other.date.notes
+
+    # Highlights
+    - match: '(\#+[^\#]*\#*)'
+      scope: nothing.notes
+      captures:
+      '1': {name: variable.language.notes}
+
+    # Headers
+    - match: '^([A-Z].*\:)$'
+      scope: entity.name.tag.notes
+
+    # Proper headers
+    - match: '^([-=]+\s?\w[\w\s]*[\-=]+)'
+      scope: entity.name.tag.notes
+
+    # Italics
+    - match: '^([\+]+\s?\w[\w\s]*[\+]+)'
+      scope: storage.type.c
+
+    # Teal Color (in Mariana)
+    - match: '\b(scene|exterior)\b'
+      scope: entity.name.function.c
+
+    # Single Quotes, as back tics
+    - match: '(\`[^\`]*\`)'
+      scope: string.quoted.single.notes
+
+    # Double Quotes
+    #- match: '(\"[^\"]*\")'
+    #  scope: string.quoted.double.notes
+
+    # Warning/critical
+    - match: '(?![a-zA-Z])\!+[^\!\n\r]+\!*'
+      scope: invalid.deprecated.notes
+
+    # Emphasis on square brackets
+    - match: '([\[\]])'
+      scope: keyword.operator
+
+    # Top-level vocab definitions
+    - match: '^(([\w\+-=\/?!@#$%^&()~]+(\s?[\w\+-=\/?!@#$%^&()~]*)*\:)(?=[ \t][\w\d]))'
+      scope: keyword.other.notes

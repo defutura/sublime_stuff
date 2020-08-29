@@ -1,0 +1,8 @@
+# Ignore everything...
+*
+# ... except preferences
+!.gitignore
+!k-text.sublime-settings
+!k-text.sublime-syntax
+!raylib.sublime-build
+!Preferences.sublime-settings
