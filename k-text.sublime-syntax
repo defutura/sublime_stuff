@@ -65,7 +65,7 @@ contexts:
       '2': {name: keyword.other.notes}
 
     # Unordered bullets
-    - match: '^(\t*[\-\=\.]+\s(\w+\:)?)'
+    - match: '^(\t*[\-\=\.]+\s(\w+.+\:)?)'
       scope: variable.language.notes
       captures:
       '2': {name: keyword.other.notes}
@@ -97,7 +97,7 @@ contexts:
       scope: entity.name.tag.notes
 
     # Italics
-    - match: '^([\+]+\s?\w[\w\s]*[\+]+)'
+    - match: '([\+]+\s?\w[\w\s]*[\+]+)'
       scope: storage.type.c
 
     # Teal Color (in Mariana)
@@ -113,7 +113,7 @@ contexts:
     #  scope: string.quoted.double.notes
 
     # Warning/critical
-    - match: '(?![a-zA-Z])\!+[^\!\n\r]+\!*'
+    - match: '(?![a-zA-Z])\!+[^ \!\n\r]+\!*'
       scope: invalid.deprecated.notes
 
     # Emphasis on square brackets
